@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>EQ</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <!-- font css -->
+  <link href="./assets/fonts/roboto.css" rel="stylesheet" />
+  <link href="./assets/fonts/razerf5.css" rel="stylesheet" />
+  <!-- global css -->
+  <link href="./assets/css/main.css" rel="stylesheet" />
+  <link href="./assets/css/tooltip.css" rel="stylesheet" />
+  <!-- local css -->
+  <link href="./assets/css/profile.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="main-container">
+    <div class="thx-wrapper flex">
+      <div class="thx-drawer flex">
+        <div class="main-title">
+          Profile List
+        </div>
+        <div id="profileWrapper" class="drawer-select flex">
+          <div id="profileList" class="scrollable">
+            <div id="profile1" class="profile-item active default no-edit">
+              default
+            </div>
+            <div id="profile2" class="profile-item game no-edit">game</div>
+            <div id="profile3" class="profile-item movie no-edit">movie</div>
+            <div id="profile4" class="profile-item music no-edit">music</div>
+            <div id="custom1" class="profile-item custom">Custom 1</div>
+            <div id="custom2" class="profile-item custom">
+              demo long text demo long text demo
+            </div>
+            <input id="profileRename" class="profile-item" placeholder="Enter Profile Name" maxlength="25" />
+          </div>
+          <div class="toolbar flex">
+            <div class="icon add" id="profileAdd"></div>
+            <div class="icon edit" id="profileEdit"></div>
+            <div class="icon delete" id="profileDelete"></div>
+
+            <div class="icon down" id="profileDown"></div>
+            <div class="icon up disabled" id="profileUp"></div>
+          </div>
+          <div id="profileDelCfm" class="profile-del alert flex">
+            <div class="title">delete eq</div>
+            <div class="body-text t-center" id="delName">delete eq</div>
+            <div class="thx-btn" id="cfmDelete">delete</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="thx-window">
+        <div class="sub-title flex">
+          <h1 id="eqTitle" class="eq-title">Default</h1>
+        </div>
+      </div>
+    </div>
+</body>
+<!-- global js -->
+<script type="text/javascript" src="./assets/js/main.js"></script>
+<!-- local js -->
+<script type="text/javascript" src="./assets/js/profile.js"></script>
+<script type="text/javascript" src="./assets/js/equalizer.js"></script>
+<script type="text/javascript">
+  var mouseIsDown = false;
+</script>
+<script type="text/javascript">
+  var spatialDisabled = true;
+</script>
+<script type="text/javascript">
+  var needPremium = true;
+  var spatialDisabled = true;
+</script>
+
+</html>

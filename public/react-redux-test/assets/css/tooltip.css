@@ -1,0 +1,33 @@
+[tooltip]:before {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+[tooltip]:before {
+    content: attr(tooltip);
+    display: block;
+    height: auto;
+    width: auto;
+    background-color: #000000;
+    border: 1px solid #5d5d5d;
+    font-size: 14px;
+    color: #ccc;
+    text-align: left;
+    line-height: 16px;
+    padding: 8px 10px;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 5px);
+    min-width: 120px;
+    box-sizing: border-box;
+    z-index: 100;
+    white-space: nowrap;
+    
+    will-change: visibility, opacity;
+    transition: visibility 0s, opacity 0.3s linear;
+}
+[tooltip]:hover:before {
+    visibility: visible;
+    filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=100);
+    opacity: 1;
+}
