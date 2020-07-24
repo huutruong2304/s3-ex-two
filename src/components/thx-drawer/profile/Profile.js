@@ -1,94 +1,84 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import "./Profile.css";
 import ProfileItem from "./profile-item/ProfileItem";
 import Toolbar from "./toolbar/Toolbar";
-import { v1 as uuidv1 } from "uuid";
 import { connect } from "react-redux";
 import Input from "./input/Input";
-const profileData = [
-  {
-    id: 1,
-    name: "default",
-    isType: "",
-    iconClass: "default",
-  },
-  { id: 2, name: "game", isType: "", iconClass: "game" },
-  { id: 3, name: "movie", isType: "", iconClass: "movie" },
-  { id: 4, name: "music", isType: "", iconClass: "music" },
-  { id: 5, name: "custom 1", isType: "edit", iconClass: "custom" },
-];
+import dataProfile from "../../../data/data.json";
+import Alert from "./alert/Alert";
 
-const Profile = ({ isEdit, profileActive, toggleActive }) => {
-  const [data, setData] = useState([]);
-
-  const handleAddProfile = () => {
-    let id = uuidv1();
-    let name = "custom";
-    setData([
-      ...data,
-      {
-        id,
-        name,
-      },
-    ]);
-    toggleActive(id, name);
-  };
-
+const Profile = ({ data, setData, canEdit, canDelete, profileActive }) => {
+  //it will initialize in first time
   useEffect(() => {
     let dataJSON = localStorage.getItem("data-profile");
     if (dataJSON === null) {
-      localStorage.setItem("data-profile", JSON.stringify(profileData));
+      setData(dataProfile);
+    } else {
+      setData(JSON.parse(dataJSON));
     }
-    setData(JSON.parse(dataJSON));
   }, []);
 
   useEffect(() => {
-    console.log("updated");
-    localStorage.setItem("data-profile", JSON.stringify(data));
-  }, [data]);
+    // setData()
+    // console.log("updated");
+    // localStorage.setItem("data-profile", JSON.stringify(data));
+  });
+
+  const renderInput = (canEdit, top) => {
+    if (canEdit) {
+      return <Input top={top * 30}></Input>;
+    } else return null;
+  };
+
+  const renderAlert = (canDelete) => {
+    if (canDelete) {
+      return <Alert></Alert>;
+    } else return null;
+  };
+
+  const displayProfileItems = (profiles) => {
+    if (!profiles) {
+      return null;
+    }
+    return profiles.map((profile, index) => {
+      return (
+        <ProfileItem
+          key={index + "-" + profile.id}
+          id={profile.id}
+          name={profile.name}
+          isEdit={profile.isEdit}
+          isActive={profile.id === profileActive.id ? true : false}
+          iconClass={profile.iconClass}
+        ></ProfileItem>
+      );
+    });
+  };
 
   return (
     <div id="profileWrapper" className="drawer-select flex">
       <div id="profileList" className="scrollable">
-        {data.map((obj, index) => {
-          return (
-            <ProfileItem
-              key={index + "-" + obj.id}
-              id={obj.id}
-              name={obj.name}
-              isType={obj.isType}
-              isActive={profileActive.id === obj.id ? true : false}
-              iconClass={obj.iconClass}
-            ></ProfileItem>
-          );
-        })}
-        <Input top={4 * 30} isShow={isEdit}></Input>
+        {displayProfileItems(data)}
+        {renderInput(canEdit, profileActive.index)}
       </div>
-      <Toolbar handleAddProfile={handleAddProfile}></Toolbar>
-      <div id="profileDelCfm" className="profile-del alert flex">
-        <div className="title">delete eq</div>
-        <div className="body-text t-center" id="delName">
-          delete eq
-        </div>
-        <div className="thx-btn" id="cfmDelete">
-          delete
-        </div>
-      </div>
+      <Toolbar></Toolbar>
+      {renderAlert(canDelete)}
     </div>
   );
 };
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    data: state.profile.data,
     profileActive: state.profile.profileActive,
-    isEdit: state.toolbar.isEdit,
+    canEdit: state.toolbar.canEdit,
+    canDelete: state.toolbar.canDelete,
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    toggleActive: (id, name) => {
-      dispatch({ type: "TOGGLE_ACTIVE", id, name });
+    setData: (data) => {
+      dispatch({ type: "SET_DATA", data });
     },
   };
 };

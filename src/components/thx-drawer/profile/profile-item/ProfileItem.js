@@ -4,27 +4,27 @@ import { connect } from "react-redux";
 const ProfileItem = ({
   id,
   name,
-  isType = "",
+  isEdit = false,
   isActive,
   iconClass,
   toggleActive,
 }) => {
-  const addTypeClass = (isType) => (isType === "edit" ? "" : " no-edit");
+  const addEditClass = (isEdit) => (isEdit ? "" : " no-edit");
   const addActiveClass = (isActive) => (isActive ? " active" : "");
   const addIconClass = (iconClass) => (iconClass ? " " + iconClass : " custom");
 
-  const handleClick = (id, name) => {
-    toggleActive(id, name);
+  const handleClick = (id, name, isEdit) => {
+    toggleActive(id, name, isEdit);
   };
   return (
     <div
       className={
         "profile-item " +
-        addTypeClass(isType) +
+        addEditClass(isEdit) +
         addActiveClass(isActive) +
         addIconClass(iconClass)
       }
-      onClick={() => handleClick(id, name)}
+      onClick={() => handleClick(id, name, isEdit)}
     >
       {name}
     </div>
@@ -33,14 +33,14 @@ const ProfileItem = ({
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    profileActive: state.profile.profileActive,
+    // profileActive: state.profile.profileActive,
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    toggleActive: (id, name) => {
-      dispatch({ type: "TOGGLE_ACTIVE", id, name });
+    toggleActive: (id, name, isEdit) => {
+      dispatch({ type: "TOGGLE_ACTIVE", id, name, isEdit });
     },
   };
 };
