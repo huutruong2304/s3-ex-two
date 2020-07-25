@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Btn from "./btn/Btn";
 import { connect } from "react-redux";
 
@@ -22,11 +22,25 @@ const Toolbar = ({
     toggleDelete();
   };
 
+  useEffect(() => {
+    if (profileActive.index === 0) {
+      setCanUp(false);
+    } else {
+      setCanUp(true);
+    }
+    if (profileActive.index === data.length - 1) {
+      setCanDown(false);
+    } else {
+      setCanDown(true);
+    }
+    // console.log("up" + canUp + "-down" + canDown);
+  }, [profileActive]);
+
   const handleGoUp = () => {
-    console.log("up");
+    console.log(canUp);
     goUpDown(-1);
     if (profileActive.index === 0) {
-      console.log("1");
+      console.log("min");
       setCanUp(false);
     } else {
       setCanUp(true);
@@ -34,8 +48,9 @@ const Toolbar = ({
   };
   const handleGoDown = () => {
     goUpDown(+1);
-    console.log("down");
-    if (profileActive.index === data.length) {
+    console.log(canDown);
+    if (profileActive.index === data.length - 1) {
+      console.log("max");
       setCanDown(false);
     } else {
       setCanDown(true);
@@ -91,11 +106,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     addProfile: () => {
       dispatch({ type: "ADD_PROFILE" });
     },
-    setCanUp: () => {
-      dispatch({ type: "SET_CAN_UP" });
+    setCanUp: (up) => {
+      dispatch({ type: "SET_CAN_UP", up });
     },
-    setCanDown: () => {
-      dispatch({ type: "SET_CAN_DOWN" });
+    setCanDown: (down) => {
+      dispatch({ type: "SET_CAN_DOWN", down });
     },
     goUpDown: (go) => [dispatch({ type: "GO_UP_DOWN", go })],
   };

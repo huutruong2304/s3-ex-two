@@ -6,6 +6,22 @@ const saveOnLocal = (data) => {
   localStorage.setItem(nameKey, JSON.stringify(data));
 };
 
+const swap2ObjetArray = (arr = [], index1 = 0, index2 = 0) => {
+  if (index2 === index1) {
+    return arr;
+  }
+  return arr.map((ele, index) => {
+    switch (index) {
+      case index1:
+        return arr[index2];
+      case index2:
+        return arr[index1];
+      default:
+        return ele;
+    }
+  });
+};
+
 const profileInitialState = {
   data: [],
   profileActive: {
@@ -15,116 +31,114 @@ const profileInitialState = {
     isEdit: false,
   },
 };
-
 const profile = (state = profileInitialState, action) => {
   switch (action.type) {
-    case "GO_UP_DOWN":
-      {
-        if (
-          (state.profileActive.index === 0 && action.go === -1) ||
-          (state.profileActive.index === state.data.length - 1 &&
-            action.go === 1)
-        ) {
-          return state;
-        }
-        // sẽ chuyền vào action.go giá trị mà muốn tăng hay giảm
-        let index = state.profileActive.index + action.go;
-        let profileActive = {
+    case "GO_UP_DOWN": {
+      if (
+        (state.profileActive.index === 0 && action.go === -1) ||
+        (state.profileActive.index === state.data.length - 1 && action.go === 1)
+      ) {
+        return state;
+      }
+      // sẽ chuyền vào action.go giá trị mà muốn tăng hay giảm
+      let index = state.profileActive.index + action.go;
+
+      //chuyển 2 profile trong data
+      let data = swap2ObjetArray(state.data, state.profileActive.index, index);
+
+      // console.log(index);
+      let profileActive = {
+        ...state.profileActive,
+        index,
+        id: data[index].id,
+        name: data[index].name,
+        isEdit: data[index].isEdit || false,
+      };
+      saveOnLocal(data);
+      return { ...state, data, profileActive };
+    }
+    case "TOGGLE_ACTIVE": {
+      let index = state.data.findIndex((ele) => ele.id === action.id);
+      return {
+        ...state,
+        profileActive: {
           ...state.profileActive,
           index,
-          id: state.data[index].id,
-          name: state.data[index].name,
-          isEdit: state.data[index].isEdit || false,
-        };
-        return { ...state, profileActive };
-      }
-      break;
-    case "TOGGLE_ACTIVE":
-      {
-        let index = state.data.findIndex((ele) => ele.id === action.id);
-        return {
-          ...state,
-          profileActive: {
-            ...state.profileActive,
-            index,
-            id: action.id,
-            name: action.name,
-            isEdit: action.isEdit,
-          },
-        };
-      }
-      break;
+          id: action.id,
+          name: action.name,
+          isEdit: action.isEdit,
+        },
+      };
+    }
+
     case "SET_DATA":
       saveOnLocal(action.data);
       return { ...state, data: action.data };
-      break;
-    case "ADD_PROFILE":
-      {
-        let index = state.data.length;
-        let id = uuidv1();
-        let name = "custom";
-        let isEdit = true;
-        let data = [
-          ...state.data,
-          {
-            index,
-            id,
-            name,
-            isEdit,
-          },
-        ];
-        saveOnLocal(data);
-        return {
-          ...state,
-          data,
-          profileActive: { ...state.profileActive, index, id, name, isEdit },
-        };
-      }
-      break;
-    case "UPDATE_PROFILE":
-      {
-        let updated = state.data.map((profile) => {
-          if (profile.id === state.profileActive.id) {
-            return { ...profile, name: action.name };
-          }
-          return profile;
-        });
-        saveOnLocal(updated);
-        return {
-          ...state,
-          data: updated,
-          profileActive: {
-            ...state.profileActive,
-            name: action.name,
-          },
-        };
-      }
-      break;
-    case "DELETE_PROFILE":
-      {
-        if (state.profileActive.isEdit) {
-          let filteredData = state.data.filter(
-            (profile) => profile.id !== state.profileActive.id
-          );
 
-          let index = state.profileActive.index - 1;
-          let profileActive = {
-            ...state.profileActive,
-            index,
-            id: filteredData[index].id,
-            name: filteredData[index].name,
-            isEdit: filteredData[index].isEdit || false,
-          };
-          saveOnLocal(filteredData);
-          return {
-            ...state,
-            data: filteredData,
-            profileActive,
-          };
+    case "ADD_PROFILE": {
+      let index = state.data.length;
+      let id = uuidv1();
+      let name = "custom";
+      let isEdit = true;
+      let data = [
+        ...state.data,
+        {
+          index,
+          id,
+          name,
+          isEdit,
+        },
+      ];
+      saveOnLocal(data);
+      return {
+        ...state,
+        data,
+        profileActive: { ...state.profileActive, index, id, name, isEdit },
+      };
+    }
+
+    case "UPDATE_PROFILE": {
+      let updated = state.data.map((profile) => {
+        if (profile.id === state.profileActive.id) {
+          return { ...profile, name: action.name };
         }
-        return state;
+        return profile;
+      });
+      saveOnLocal(updated);
+      return {
+        ...state,
+        data: updated,
+        profileActive: {
+          ...state.profileActive,
+          name: action.name,
+        },
+      };
+    }
+
+    case "DELETE_PROFILE": {
+      if (state.profileActive.isEdit) {
+        let filteredData = state.data.filter(
+          (profile) => profile.id !== state.profileActive.id
+        );
+
+        let index = state.profileActive.index - 1;
+        let profileActive = {
+          ...state.profileActive,
+          index,
+          id: filteredData[index].id,
+          name: filteredData[index].name,
+          isEdit: filteredData[index].isEdit || false,
+        };
+        saveOnLocal(filteredData);
+        return {
+          ...state,
+          data: filteredData,
+          profileActive,
+        };
       }
-      break;
+      return state;
+    }
+
     default:
       return state;
   }

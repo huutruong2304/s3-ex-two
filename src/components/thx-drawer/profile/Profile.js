@@ -19,10 +19,12 @@ const Profile = ({ data, setData, canEdit, canDelete, profileActive }) => {
   }, []);
 
   useEffect(() => {
-    // setData()
-    // console.log("updated");
-    // localStorage.setItem("data-profile", JSON.stringify(data));
-  });
+    setTimeout(() => {
+      fetch("https://reqres.in/api/users")
+        .then((res) => res.json())
+        .then((result) => console.log(result));
+    }, 3000);
+  }, [data]);
 
   const renderInput = (canEdit, top) => {
     if (canEdit) {

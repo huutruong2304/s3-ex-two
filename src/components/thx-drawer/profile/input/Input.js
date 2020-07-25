@@ -1,13 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 
-const Input = ({
-  top,
-  isShow = false,
-  profileActive,
-  updateProfile,
-  toggleEdit,
-}) => {
+const Input = ({ top, profileActive, updateProfile, toggleEdit }) => {
   const inputName = useRef(null);
   const [name, setName] = useState("");
   const isChange = (event) => {
@@ -33,6 +27,7 @@ const Input = ({
     }
   };
   useEffect(() => {
+    // console.log("render inputt");
     setName(profileActive.name);
     inputName.current.focus();
   }, []);
