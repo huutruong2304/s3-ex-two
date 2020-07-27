@@ -7,7 +7,14 @@ import Input from "./input/Input";
 import dataProfile from "../../../data/data.json";
 import Alert from "./alert/Alert";
 
-const Profile = ({ data, setData, canEdit, canDelete, profileActive }) => {
+const Profile = ({
+  data,
+  setData,
+  canEdit,
+  canDelete,
+  profileActive,
+  toggleActive,
+}) => {
   //it will initialize in first time
   useEffect(() => {
     let dataJSON = localStorage.getItem("data-profile");
@@ -16,6 +23,8 @@ const Profile = ({ data, setData, canEdit, canDelete, profileActive }) => {
     } else {
       setData(JSON.parse(dataJSON));
     }
+
+    toggleActive(1);
   }, []);
 
   useEffect(() => {
@@ -81,6 +90,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     setData: (data) => {
       dispatch({ type: "SET_DATA", data });
+    },
+    toggleActive: (id, name) => {
+      dispatch({ type: "TOGGLE_ACTIVE", id });
     },
   };
 };

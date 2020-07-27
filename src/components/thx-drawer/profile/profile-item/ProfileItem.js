@@ -13,8 +13,8 @@ const ProfileItem = ({
   const addActiveClass = (isActive) => (isActive ? " active" : "");
   const addIconClass = (iconClass) => (iconClass ? " " + iconClass : " custom");
 
-  const handleClick = (id, name, isEdit) => {
-    toggleActive(id, name, isEdit);
+  const handleClick = (id) => {
+    toggleActive(id);
   };
   return (
     <div
@@ -24,7 +24,7 @@ const ProfileItem = ({
         addActiveClass(isActive) +
         addIconClass(iconClass)
       }
-      onClick={() => handleClick(id, name, isEdit)}
+      onClick={() => handleClick(id)}
     >
       {name}
     </div>
@@ -39,8 +39,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    toggleActive: (id, name, isEdit) => {
-      dispatch({ type: "TOGGLE_ACTIVE", id, name, isEdit });
+    toggleActive: (id) => {
+      dispatch({ type: "TOGGLE_ACTIVE", id });
     },
   };
 };

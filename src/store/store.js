@@ -6,7 +6,7 @@ const saveOnLocal = (data) => {
   localStorage.setItem(nameKey, JSON.stringify(data));
 };
 
-const swap2ObjetArray = (arr = [], index1 = 0, index2 = 0) => {
+const swap2ObjectArray = (arr = [], index1 = 0, index2 = 0) => {
   if (index2 === index1) {
     return arr;
   }
@@ -25,15 +25,16 @@ const swap2ObjetArray = (arr = [], index1 = 0, index2 = 0) => {
 const profileInitialState = {
   data: [],
   profileActive: {
-    index: 0,
-    id: 1,
-    name: "...",
-    isEdit: false,
+    index: null,
+    id: null,
+    name: null,
+    isEdit: null,
   },
 };
 const profile = (state = profileInitialState, action) => {
   switch (action.type) {
     case "GO_UP_DOWN": {
+      console.log("go up down");
       if (
         (state.profileActive.index === 0 && action.go === -1) ||
         (state.profileActive.index === state.data.length - 1 && action.go === 1)
@@ -44,7 +45,7 @@ const profile = (state = profileInitialState, action) => {
       let index = state.profileActive.index + action.go;
 
       //chuyển 2 profile trong data
-      let data = swap2ObjetArray(state.data, state.profileActive.index, index);
+      let data = swap2ObjectArray(state.data, state.profileActive.index, index);
 
       // console.log(index);
       let profileActive = {
@@ -57,7 +58,9 @@ const profile = (state = profileInitialState, action) => {
       saveOnLocal(data);
       return { ...state, data, profileActive };
     }
+    // chỗ này nên cập nhật lại là truyền vào id r trong action này tự tìm ra thông tin của th kia thay vì phải pass vào 2 3 value id name
     case "TOGGLE_ACTIVE": {
+      // console.log("toggle active");
       let index = state.data.findIndex((ele) => ele.id === action.id);
       return {
         ...state,
@@ -65,8 +68,8 @@ const profile = (state = profileInitialState, action) => {
           ...state.profileActive,
           index,
           id: action.id,
-          name: action.name,
-          isEdit: action.isEdit,
+          name: state.data[index].name,
+          isEdit: state.data[index].isEdit || false,
         },
       };
     }
@@ -170,4 +173,7 @@ const allReducers = combineReducers({
   toolbar,
 });
 
-export default createStore(allReducers);
+const store = createStore(allReducers);
+// store.subscribe(() => console.log(store.getState()));
+
+export default store;

@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 const Toolbar = ({
   data,
   profileActive,
+  toggleActive,
   toggleEdit,
   toggleDelete,
   addProfile,
@@ -22,7 +23,14 @@ const Toolbar = ({
     toggleDelete();
   };
 
+  // const setDefaultActive = (id, name) => {
+  //   toggleActive(id, name);
+  // };
+  // useEffect(() => {
+  //   setDefaultActive(1, "default");
+  // }, []);
   useEffect(() => {
+    // console.log("toolbar");
     if (profileActive.index === 0) {
       setCanUp(false);
     } else {
@@ -94,7 +102,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    toggleActive: (id) => {
+    toggleActive: (id, name) => {
       dispatch({ type: "TOGGLE_ACTIVE", id });
     },
     toggleEdit: () => {

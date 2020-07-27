@@ -2,6 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 
 const ThxWindow = ({ profileActive }) => {
+  // console.log("thxwindow");
+  // console.log(profileActive);
   return (
     <div className="thx-window">
       <div className="sub-title flex">
