@@ -37,7 +37,7 @@ const Profile = ({
 
   const renderInput = (canEdit, top) => {
     if (canEdit) {
-      return <Input top={top * 30}></Input>;
+      return <Input></Input>;
     } else return null;
   };
 
@@ -86,7 +86,7 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     setData: (data) => {
       dispatch({ type: "SET_DATA", data });

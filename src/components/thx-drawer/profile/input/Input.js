@@ -28,8 +28,9 @@ const Input = ({ top, profileActive, updateProfile, toggleEdit }) => {
   };
   useEffect(() => {
     // console.log("render inputt");
+    inputName.current?.focus();
+
     setName(profileActive.name);
-    inputName.current.focus();
   }, []);
 
   useEffect(() => {
@@ -47,7 +48,7 @@ const Input = ({ top, profileActive, updateProfile, toggleEdit }) => {
       className="profile-item show"
       placeholder="Enter Profile Name"
       maxLength={25}
-      style={{ top: top + "px" }}
+      style={{ top: profileActive.index + "px" }}
       value={name}
       onChange={(event) => isChange(event)}
       onKeyPress={(event) => handleEnter(event)}
