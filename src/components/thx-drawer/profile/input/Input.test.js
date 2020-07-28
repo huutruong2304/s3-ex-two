@@ -1,44 +1,57 @@
 import React from "react";
-import Enzyme, { configure, shallow, mount } from "enzyme";
+import Enzyme, { configure, mount } from "enzyme";
 import Input from "./Input";
 import Adapter from "enzyme-adapter-react-16";
 import configureStore from "redux-mock-store";
 // import { Provider } from "react-redux";
 // import store from "../../../../store/store";
-// import data from "../../../../data/data.json";
+import data from "../../../../data/data.json";
 
 configure({ adapter: new Adapter() });
+const mockStore = configureStore([]);
 
 describe("Component <Input />", () => {
   // let wrapper;
   const updateProfile = jest.fn();
   const toggleEdit = jest.fn();
-  const profileActive = {
-    top: 0,
-    profileActive: {
-      index: 2,
-      id: 1,
-      name: "something",
-    },
-  };
+  let store;
   let wrapper;
 
+  const profileActive = {
+    index: 0,
+    id: 1,
+    name: "something",
+    isEdit: true,
+  };
+
   beforeEach(() => {
+    store = mockStore({
+      profile: {
+        data: data,
+        profileActive: {
+          index: 3,
+          id: 3,
+          name: "hahaha",
+          isEdit: true,
+        },
+      },
+    });
+
     wrapper = mount(
-      // <p>ha</p>
       <Input
-        profileActive={profileActive}
+        store={store}
         updateProfile={updateProfile}
         toggleEdit={toggleEdit}
       />
     );
-    wrapper.setState = {
-      name: "",
-    };
   });
 
   it("rendered", () => {
-    console.log(wrapper.debug());
+    // console.log(wrapper.debug());
+    expect(wrapper.find(Input)).toHaveLength(1);
+  });
+
+  it("having value", () => {
+    expect(wrapper.find("input").instance().value).toBe("hahaha");
   });
 });
-// vẫn chưa ra dc cái th truyền props, store

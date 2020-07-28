@@ -31,32 +31,12 @@ describe("My component <Profile />", () => {
         canDelete: false,
       },
     });
-    store.dispatch = jest.fn();
-    wrapper = shallow(
-      <Provider store={store}>
-        <Profile></Profile>
-      </Provider>
-    );
+    // store.dispatch = jest.fn();
+    wrapper = shallow(<Profile store={store} />);
   });
 
   it("rendered", () => {
+    console.log(wrapper.debug());
     expect(wrapper).not.toBeNull();
   });
-
-  // it("show my toolbar", () => {
-  //   expect(wrapper.find("#profileList")).toHaveLength(1);
-  // });
-
-  // it("having my input", () => {
-  //   // expect(wrapper.Profile.find("Toolbar")).toHaveLength(1);
-  // });
-
-  // console.log(wrapper.debug());
 });
-
-// describe("test component  <Profile />", () => {
-//   const wrapper = shallow(<Profile data={data} />);
-//   it("works", () => {
-//     expect(wrapper).not.toBeNull();
-//   });
-// });

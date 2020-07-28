@@ -31,9 +31,11 @@ const profileInitialState = {
     isEdit: null,
   },
 };
-const profile = (state = profileInitialState, action) => {
+const profileReducer = (state = profileInitialState, action) => {
   switch (action.type) {
     case "GO_UP_DOWN": {
+      // go = 1 là sẽ đi xuống 1
+      // go = -1 là sẽ đi lên 1
       console.log("go up down");
       if (
         (state.profileActive.index === 0 && action.go === -1) ||
@@ -141,7 +143,6 @@ const profile = (state = profileInitialState, action) => {
       }
       return state;
     }
-
     default:
       return state;
   }
@@ -153,7 +154,7 @@ const toolbarInitialState = {
   canUp: false,
   canDelete: false,
 };
-const toolbar = (state = toolbarInitialState, action) => {
+const toolbarReducer = (state = toolbarInitialState, action) => {
   switch (action.type) {
     case "TOGGLE_EDIT":
       return { ...state, canEdit: !state.canEdit };
@@ -169,11 +170,11 @@ const toolbar = (state = toolbarInitialState, action) => {
 };
 
 const allReducers = combineReducers({
-  profile,
-  toolbar,
+  profile: profileReducer,
+  toolbar: toolbarReducer,
 });
 
 const store = createStore(allReducers);
 // store.subscribe(() => console.log(store.getState()));
 
-export default store;
+export { store, profileReducer, toolbarReducer };
