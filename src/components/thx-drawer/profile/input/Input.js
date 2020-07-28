@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 
-const Input = ({ top, profileActive, updateProfile, toggleEdit }) => {
+const Input = ({ profileActive, updateProfile, toggleEdit }) => {
   const inputName = useRef(null);
   const [name, setName] = useState("");
   const isChange = (event) => {
